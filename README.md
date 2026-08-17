@@ -26,6 +26,7 @@ log-analyzer-cli/
 ├── main.py
 ├── run.sh
 ├── sample.log
+├── empty.log
 ├── requirements.txt
 ├── README.md
 ├── LICENSE
@@ -38,6 +39,8 @@ log-analyzer-cli/
 │   ├── report.py
 │   └── exceptions.py
 └── tests/
+    ├── test_filters.py
+    └── test_parser.py
 ```
 
 ## Requirements
@@ -134,19 +137,29 @@ The default log level is `ALL`.
 ### Filter by a date/time range
 
 ```bash
-./run.sh   --file sample.log   --from "2024-06-10 08:00:00"   --to "2024-06-10 08:20:00"
+./run.sh \
+  --file sample.log \
+  --from "2024-06-10 08:00:00" \
+  --to "2024-06-10 08:20:00"
 ```
 
 ### Combine level and date filters
 
 ```bash
-./run.sh   --file sample.log   --level ERROR   --from "2024-06-10 08:00:00"   --to "2024-06-11 10:00:00"
+./run.sh \
+  --file sample.log \
+  --level ERROR \
+  --from "2024-06-10 08:00:00" \
+  --to "2024-06-11 10:00:00"
 ```
 
 ### JSON output
 
 ```bash
-./run.sh   --file sample.log   --level ERROR   --format json
+./run.sh \
+  --file sample.log \
+  --level ERROR \
+  --format json
 ```
 
 Example:
@@ -202,7 +215,7 @@ Example:
 [INFO] 2024-06-11 09:10:00 — Backup completed
 ```
 
-The sample also demonstrates malformed records. For example, the current sample output reports:
+The sample also demonstrates malformed records. For example:
 
 ```text
 Warning: skipping malformed line 7: Unknown log level: 'IS'
@@ -261,18 +274,37 @@ cli.py
 
 The project uses `pytest`.
 
-Run:
-
-```bash
-.venv/bin/pytest
-```
-
-or activate the environment first:
+Activate the virtual environment:
 
 ```bash
 source .venv/bin/activate
-pytest
 ```
+
+Run the complete test suite:
+
+```bash
+python -m pytest
+```
+
+Current test suite:
+
+```text
+5 passed
+```
+
+The tests cover log parsing and filtering behavior.
+
+Run individual test files:
+
+```bash
+python -m pytest tests/test_parser.py
+```
+
+```bash
+python -m pytest tests/test_filters.py
+```
+
+Using `python -m pytest` ensures pytest runs with the currently active Python interpreter and project environment.
 
 ## Code Quality
 
@@ -281,6 +313,8 @@ Run `flake8`:
 ```bash
 .venv/bin/flake8 log_analyzer/
 ```
+
+A clean Flake8 run produces no output and returns exit code `0`.
 
 Run `mypy`:
 
@@ -300,11 +334,13 @@ The project requirements currently include `flake8`, `mypy`, and `pytest`.
 
 Its setup logic is intentionally performed only when `.venv` does not exist.
 
-This means:
+The workflow is:
 
 ```text
 First run:
 run.sh
+  ↓
+check Python
   ↓
 create .venv
   ↓
@@ -319,6 +355,8 @@ use existing .venv
   ↓
 run application
 ```
+
+This prevents dependency installation from happening every time the application is executed.
 
 The virtual environment should not be committed to GitHub. Add the following to `.gitignore`:
 
@@ -347,5 +385,4 @@ This project is open source and is licensed under the **MIT License**.
 
 See the [`LICENSE`](LICENSE) file for the complete license text.
 
-The MIT License permits use, modification, distribution, and commercial use, subject to its conditions. It is a permissive open-source license recognized by the SPDX License List as `MIT`. 
-
+The MIT License permits use, modification, distribution, and commercial use, subject to its conditions.
