@@ -1,0 +1,12 @@
+2024-06-10 08:00:01 INFO Server started on port 8080
+2024-06-10 08:05:12 INFO Request received: GET /api/health
+2024-06-10 08:10:33 WARN Memory usage at 82%
+2024-06-10 08:15:44 ERROR Database connection failed: timeout
+2024-06-10 08:20:55 ERROR Retry attempt 1 of 3
+2024-06-10 08:25:01 INFO Retry succeeded
+THIS LINE IS MALFORMED
+2024-06-10 08:30:22 WARN Disk usage at 91%
+2024-06-11 09:00:00 INFO Daily backup started
+2024-06-11 09:05:00 ERROR Backup failed: permission denied
+2024-06-11 09:10:00 INFO Backup completed
+BAD TIMESTAMP ERROR message
